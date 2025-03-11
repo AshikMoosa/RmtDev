@@ -10,7 +10,7 @@ import renderSpinner from "./Spinner.js";
 import renderJobList from "./JobList.js";
 
 // -- SEARCH COMPONENT --
-const submitHandler = (event) => {
+const submitHandler = async (event) => {
   // prevent default behavior
   event.preventDefault();
 
@@ -36,32 +36,28 @@ const submitHandler = (event) => {
   renderSpinner("search");
 
   // fetch job data
-  fetch(`${BASE_API_URL}/jobs?search=${searchText}`)
-    .then((response) => {
-      if (!response.ok) {
-        // Using browser constructor function Error
-        throw new Error("Resource not found or server issues!!");
-      }
+  try {
+    const response = await fetch(`${BASE_API_URL}/jobs?search=${searchText}`);
+    const data = await response.json();
+    if (!response.ok) {
+      // Using browser constructor function Error and description from response network
+      throw new Error(data.description);
+    }
+    // extract job items
+    const { jobItems } = data;
 
-      return response.json();
-    })
-    .then((data) => {
-      // extract job items
-      const { jobItems } = data;
+    // remove spinner since data fetched
+    renderSpinner("search");
 
-      // remove spinner since data fetched
-      renderSpinner("search");
+    // render number of results - badge number
+    numberEl.textContent = jobItems.length;
 
-      // render number of results - badge number
-      numberEl.textContent = jobItems.length;
-
-      // render job items in search job list
-      renderJobList(jobItems);
-    })
-    .catch((error) => {
-      renderSpinner("search");
-      renderError(error.message);
-    });
+    // render job items in search job list
+    renderJobList(jobItems);
+  } catch (error) {
+    renderSpinner("search");
+    renderError(error.message);
+  }
 };
 
 searchFormEl.addEventListener("submit", submitHandler);
