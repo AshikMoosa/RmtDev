@@ -3,6 +3,7 @@ import {
   jobListSearchEl,
   jobDetailsContentEl,
 } from "../common.js";
+import renderError from "./Error.js";
 import renderSpinner from "./Spinner.js";
 import renderJobDetails from "./JobDetails.js";
 
@@ -60,8 +61,8 @@ const clickHandler = (event) => {
   fetch(`${BASE_API_URL}/jobs/${id}`)
     .then((response) => {
       if (!response.ok) {
-        console.log("Something went wrong!!s");
-        return;
+        // Using browser constructor function Error
+        throw new Error("Resource not found or server issues!!");
       }
 
       return response.json();
@@ -76,7 +77,10 @@ const clickHandler = (event) => {
       // render job details
       renderJobDetails(jobItem);
     })
-    .catch((error) => console.log(error));
+    .catch((error) => {
+      renderSpinner("search");
+      renderError(error.message);
+    });
 };
 
 jobListSearchEl.addEventListener("click", clickHandler);
