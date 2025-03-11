@@ -5,6 +5,7 @@ import {
   jobListSearchEl,
   numberEl,
 } from "../common.js";
+import renderError from "./Error.js";
 
 // -- SEARCH COMPONENT --
 const submitHandler = (event) => {
@@ -19,11 +20,7 @@ const submitHandler = (event) => {
   const patternMatch = forbiddenPattern.test(searchText);
 
   if (patternMatch) {
-    errorTextEl.textContent = "Your search may not contain numbers";
-    errorEl.classList.add("error--visible");
-    setTimeout(() => {
-      errorEl.classList.remove("error--visible");
-    }, 3500);
+    renderError("Your search may not contain numbers");
     return;
   }
 
