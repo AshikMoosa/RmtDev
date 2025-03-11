@@ -24,6 +24,7 @@ const submitHandler = (event) => {
     setTimeout(() => {
       errorEl.classList.remove("error--visible");
     }, 3500);
+    return;
   }
 
   // blur input after form submit
