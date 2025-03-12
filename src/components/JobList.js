@@ -4,6 +4,7 @@ import {
   jobDetailsContentEl,
   getData,
   state,
+  RESULTS_PER_PAGE,
 } from "../common.js";
 import renderError from "./Error.js";
 import renderSpinner from "./Spinner.js";
@@ -13,8 +14,13 @@ const renderJobList = () => {
   // remove previous job items
   jobListSearchEl.innerHTML = "";
 
-  state.searchJobItems.slice(0, 7).forEach((jobItem) => {
-    const newJobItemHTML = `
+  state.searchJobItems
+    .slice(
+      state.currentPage * RESULTS_PER_PAGE - 7,
+      state.currentPage * RESULTS_PER_PAGE
+    )
+    .forEach((jobItem) => {
+      const newJobItemHTML = `
           <li class="job-item">
             <a class="job-item__link" href="${jobItem.id}">
                 <div class="job-item__badge">${jobItem.badgeLetters}</div>
@@ -33,8 +39,8 @@ const renderJobList = () => {
                 </div>
               </a>
           </li>`;
-    jobListSearchEl.insertAdjacentHTML("beforeend", newJobItemHTML);
-  });
+      jobListSearchEl.insertAdjacentHTML("beforeend", newJobItemHTML);
+    });
 };
 
 // -- JOB LIST COMPONENT --
