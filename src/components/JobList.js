@@ -68,6 +68,9 @@ const clickHandler = async (event) => {
   // find id of the job item which needs to be shown in detail
   const id = jobItemEl.children[0].getAttribute("href");
 
+  // add id to url for routing
+  history.pushState(null, "", `/#${id}`);
+
   try {
     // fetch job details based on id
     const data = await getData(`${BASE_API_URL}/jobs/${id}`);
