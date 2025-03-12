@@ -4,6 +4,7 @@ import {
   searchFormEl,
   jobListSearchEl,
   numberEl,
+  getData,
 } from "../common.js";
 import renderError from "./Error.js";
 import renderSpinner from "./Spinner.js";
@@ -35,14 +36,10 @@ const submitHandler = async (event) => {
   // render spinner since we are fetching job data
   renderSpinner("search");
 
-  // fetch job data
   try {
-    const response = await fetch(`${BASE_API_URL}/jobs?search=${searchText}`);
-    const data = await response.json();
-    if (!response.ok) {
-      // Using browser constructor function Error and description from response network
-      throw new Error(data.description);
-    }
+    // fetch job data
+    const data = await getData(`${BASE_API_URL}/jobs?search=${searchText}`);
+
     // extract job items
     const { jobItems } = data;
 
