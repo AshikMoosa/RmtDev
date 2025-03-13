@@ -6,6 +6,7 @@ export const RESULTS_PER_PAGE = 7;
 // GLOBAL STATE
 export const state = {
   searchJobItems: [],
+  bookmarkJobItems: [],
   activeJobItem: {},
   currentPage: 1,
 };
