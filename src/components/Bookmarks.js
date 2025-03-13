@@ -23,10 +23,16 @@ const clickHandler = (event) => {
     state.bookmarkJobItems.push(state.activeJobItem);
   }
 
+  // persist data with localStorage
+  localStorage.setItem(
+    "bookmarkJobItem",
+    JSON.stringify(state.bookmarkJobItems)
+  );
+
   // make bookmark button active/inactive
   document
     .querySelector(".job-info__bookmark-icon")
-    .classList.toggle("job-info__bookmark-icon--bookmarked ");
+    .classList.toggle("job-info__bookmark-icon--bookmarked");
 };
 
 const mouseEnterHandler = () => {
